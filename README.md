@@ -1,5 +1,17 @@
 # Mohsen Sales OS — Hotel Renewals
 
+## Open a tool
+
+Choose where you want to go:
+
+- **[Main Toolkit — Hotel Renewals](https://mohamed20034.github.io/My-Tools/)**  
+  Open the regular toolkit: renewal copilot, discovery builder, value comparator, follow-up writer and hotel renewal tracker.
+
+- **[Task Desk — Personal Tasks & Reminders](https://mohamed20034.github.io/My-Tools/tasks/)**  
+  Open the separate task manager with due dates, 5/10/15-minute reminders and a repeatable gentle alarm.
+
+---
+
 A personal browser-based workspace for hotel-only Tripadvisor Business Advantage renewal preparation.
 
 ## Tools included
