@@ -52,7 +52,7 @@
       </div>
       <label class="field"><span>Notes <small style="color:#829186;font-weight:400">(optional)</small></span><textarea id="taskNotes" maxlength="500" placeholder="Add a few details..."></textarea></label>
       <div class="form-actions"><button class="btn primary" id="saveTaskBtn" type="submit">＋ Add task</button><button class="btn ghost" id="cancelEditBtn" type="button" hidden>Cancel</button></div>
-      <p class="hint">Reminders are checked while this page is open in your browser. Allow sound/notifications for the best experience.</p>
+      <p class="hint">Reminders are checked while this page is open. Click Enable sound once each time you open Task Desk; allow notifications for the best experience.</p>
     </form>
     <div class="panel tasks-panel">
       <div class="tasks-head"><div><h2>Your tasks</h2><p>Keep the important things moving.</p></div><span class="pill" id="taskCountLabel">0 tasks</span></div>
@@ -69,7 +69,7 @@
       <div class="list-footer"><span id="listSummary">Your tasks stay on this device.</span><button class="btn small ghost" id="importBtn" type="button">↑ Import backup</button></div>
     </div>
   </section>
-  <p class="fineprint">Local storage only: tasks do not automatically sync between devices. Browser reminders are not a server-side alarm, so the Task Desk page must remain open (the tab may be in the background) and your browser must be running. Notifications also depend on browser permission and device settings.</p>
+  <p class="fineprint">Local storage only: tasks do not automatically sync between devices. Browser reminders are not a server-side alarm, so Task Desk must remain open (the tab may be in the background) and your browser must be running. Click Enable sound after each page reload. Notifications also depend on browser permission and device settings.</p>
 </main>
 </div>
 <input type="file" id="importFile" accept="application/json,.json" hidden>
@@ -114,7 +114,7 @@ function loadTasks(){
   }catch(e){tasks=[];toast("Saved task data could not be read.","error");}
   try{
     const prefs=JSON.parse(localStorage.getItem(PREF_KEY)||"{}");
-    soundEnabled=!!prefs.soundEnabled;
+    soundEnabled=false;
     notificationEnabled=!!prefs.notificationEnabled&&("Notification" in window)&&Notification.permission==="granted";
   }catch(e){}
 }
