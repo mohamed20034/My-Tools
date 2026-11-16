@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#111713">
+<title>Task Desk | Mohsen Tools</title>
+<style>
+:root{color-scheme:dark;--bg:#0d120f;--panel:#151d18;--panel2:#1b251e;--line:#2a382e;--muted:#9aa99d;--text:#f0f5f0;--green:#a9ef78;--green2:#79c94f;--red:#ff8b82;--amber:#f5c66d;--blue:#8fc8ff;--shadow:0 18px 50px rgba(0,0,0,.24)}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 75% -20%,rgba(100,160,90,.12),transparent 42%),var(--bg);color:var(--text);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}.shell{min-height:100vh;display:grid;grid-template-columns:248px 1fr}.sidebar{position:sticky;top:0;height:100vh;padding:27px 18px;border-right:1px solid var(--line);background:rgba(16,23,18,.92);display:flex;flex-direction:column}.brand{display:flex;gap:12px;align-items:center;padding:3px 8px 32px}.brand-mark{width:39px;height:39px;border-radius:12px;background:var(--green);color:#10200d;font-size:21px;font-weight:900;display:grid;place-items:center}.brand b{display:block;font-size:12px;letter-spacing:1.1px}.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:2px;margin-top:2px}.side-label{padding:0 10px 10px;color:#708075;font-size:10px;letter-spacing:1.8px;font-weight:800}.side-link{display:flex;align-items:center;gap:12px;padding:11px 12px;margin:2px 0;border-radius:10px;color:#b8c5bb;text-decoration:none;font-size:13px}.side-link.active{background:rgba(169,239,120,.1);color:var(--green);border:1px solid rgba(169,239,120,.13)}.side-link .glyph{font-size:17px;width:20px;text-align:center}.side-note{margin-top:auto;padding:14px;border:1px solid var(--line);border-radius:12px;background:#121a15}.side-note b{font-size:12px;color:var(--green)}.side-note p{margin:6px 0 0;color:var(--muted);font-size:11px;line-height:1.6}.side-foot{color:#718076;font-size:10px;padding:16px 8px 0}.main{min-width:0;padding:30px clamp(18px,4vw,56px) 50px;max-width:1500px;width:100%;margin:0 auto}.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:27px}.eyebrow{font-size:10px;color:var(--green);letter-spacing:2px;font-weight:800}.topbar h1{margin:4px 0 0;font-size:clamp(26px,3vw,35px);letter-spacing:-1.2px}.top-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.pill{padding:7px 11px;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-size:11px;white-space:nowrap}.btn{border:1px solid var(--line);background:#202a23;color:var(--text);padding:9px 13px;border-radius:9px;font-size:12px;font-weight:700;transition:.18s}.btn:hover{border-color:#66815e;transform:translateY(-1px)}.btn.primary{background:var(--green);color:#10200d;border-color:var(--green)}.btn.primary:hover{background:#c0f59a}.btn.ghost{background:transparent;color:#c2cec5}.btn.danger{color:var(--red);border-color:rgba(255,139,130,.25);background:rgba(255,139,130,.06)}.btn.small{padding:6px 9px;font-size:11px}.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:22px}.metric{background:linear-gradient(145deg,#19231c,#141b16);border:1px solid var(--line);border-radius:13px;padding:16px 17px;min-height:100px}.metric label{display:block;color:var(--muted);font-size:10px;letter-spacing:1.1px;font-weight:800}.metric strong{display:block;font-size:27px;margin-top:6px;letter-spacing:-1px}.metric small{display:block;color:#809083;font-size:10px;margin-top:0}.metric.accent strong{color:var(--green)}.workspace{display:grid;grid-template-columns:minmax(280px,360px) minmax(0,1fr);gap:17px;align-items:start}.panel{background:rgba(21,29,24,.94);border:1px solid var(--line);border-radius:15px;box-shadow:var(--shadow)}.form-panel{padding:20px;position:sticky;top:18px}.panel-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:17px}.panel-heading h2{font-size:17px;margin:0;letter-spacing:-.3px}.panel-heading p{color:var(--muted);font-size:11px;margin:4px 0 0}.field{display:block;margin:13px 0}.field>span{display:block;color:#c7d2ca;font-size:11px;font-weight:700;margin:0 0 6px}.field input,.field textarea,.field select,.search{width:100%;background:#0e1511;border:1px solid #304034;border-radius:9px;padding:11px 12px;color:var(--text);outline:none;min-height:42px}.field textarea{resize:vertical;min-height:76px}.field input:focus,.field textarea:focus,.field select:focus,.search:focus{border-color:var(--green2);box-shadow:0 0 0 3px rgba(169,239,120,.08)}.field input::placeholder,.field textarea::placeholder,.search::placeholder{color:#657469}.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.form-actions{display:flex;gap:8px;margin-top:16px}.form-actions .btn{flex:1}.hint{font-size:10px;color:#819084;margin:11px 0 0;line-height:1.5}.tasks-panel{padding:20px;min-height:530px}.tasks-head{display:flex;align-items:flex-start;justify-content:space-between;gap:15px;margin-bottom:15px}.tasks-head h2{margin:0;font-size:19px;letter-spacing:-.5px}.tasks-head p{margin:4px 0 0;color:var(--muted);font-size:11px}.task-tools{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-bottom:14px}.search-wrap{flex:1;min-width:180px}.search{min-height:38px;padding:8px 11px;font-size:12px}.filters{display:flex;gap:5px;flex-wrap:wrap}.filter{border:1px solid var(--line);background:transparent;color:#aab8ad;border-radius:8px;padding:7px 10px;font-size:11px}.filter.active{background:rgba(169,239,120,.1);border-color:rgba(169,239,120,.35);color:var(--green)}.task-list{display:flex;flex-direction:column;gap:9px}.task{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:12px;align-items:start;padding:14px;border-radius:12px;border:1px solid #2b392f;background:#111914;transition:.16s}.task:hover{border-color:#526b55;background:#141e17}.task.done{opacity:.62}.task-check{appearance:none;width:19px;height:19px;margin:2px 0 0;border:1.5px solid #607364;border-radius:6px;background:transparent;cursor:pointer;position:relative}.task-check:checked{background:var(--green);border-color:var(--green)}.task-check:checked:after{content:"✓";position:absolute;inset:-2px 0 0;text-align:center;color:#13200e;font-weight:900;font-size:14px}.task-title{font-size:13px;font-weight:800;overflow-wrap:anywhere}.task.done .task-title{text-decoration:line-through;color:#91a095}.task-notes{margin:4px 0 0;color:#95a398;font-size:11px;white-space:pre-wrap;overflow-wrap:anywhere}.task-meta{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:8px}.meta{font-size:10px;color:#9aab9e}.tag{font-size:9px;padding:3px 7px;border-radius:999px;border:1px solid var(--line);color:#aab8ad;text-transform:uppercase;letter-spacing:.5px}.tag.high{color:var(--red);border-color:rgba(255,139,130,.3);background:rgba(255,139,130,.06)}.tag.medium{color:var(--amber);border-color:rgba(245,198,109,.25)}.tag.low{color:var(--blue);border-color:rgba(143,200,255,.25)}.tag.overdue{color:var(--red);border-color:rgba(255,139,130,.35)}.task-actions{display:flex;gap:5px;align-items:center}.icon-btn{width:29px;height:29px;border-radius:8px;border:1px solid var(--line);background:#19231c;color:#b8c6bb;font-size:12px}.icon-btn:hover{border-color:#829c79;color:var(--green)}.empty{padding:55px 15px;text-align:center;color:var(--muted)}.empty .empty-icon{font-size:30px;color:#77936e}.empty b{display:block;color:#dce7dd;margin-top:10px;font-size:14px}.empty p{font-size:11px;margin:5px 0}.list-footer{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;color:#839286;font-size:10px}.reminder-strip{display:flex;align-items:center;gap:10px;border:1px solid rgba(169,239,120,.2);background:rgba(169,239,120,.055);padding:11px 13px;border-radius:11px;margin-bottom:16px}.reminder-strip .bell{color:var(--green);font-size:17px}.reminder-strip div{font-size:11px;color:#b4c2b7;line-height:1.45}.reminder-strip b{color:#e4f1e6}.toast-area{position:fixed;right:22px;bottom:22px;z-index:30;display:flex;flex-direction:column;gap:8px;max-width:min(370px,calc(100vw - 32px))}.toast{background:#26352a;border:1px solid #58764f;color:#f0f8ed;border-radius:11px;padding:12px 15px;box-shadow:0 15px 40px #0008;font-size:12px;animation:pop .2s ease}.toast.error{border-color:#8f4a46;background:#392321}@keyframes pop{from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}.fineprint{color:#748278;font-size:10px;margin:19px 0 0;line-height:1.6}.modal-backdrop{position:fixed;inset:0;background:#0009;display:none;place-items:center;z-index:20;padding:18px}.modal-backdrop.open{display:grid}.modal{max-width:430px;width:100%;padding:22px;background:#17211a;border:1px solid var(--line);border-radius:15px}.modal h3{margin:0 0 7px}.modal p{color:var(--muted);font-size:12px;line-height:1.6}.mobile-brand{display:none}
+@media(max-width:1050px){.workspace{grid-template-columns:310px minmax(0,1fr)}.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.sidebar{width:220px}.shell{grid-template-columns:220px 1fr}}
+@media(max-width:780px){.shell{display:block}.sidebar{position:relative;height:auto;width:auto;padding:13px 16px;border-right:0;border-bottom:1px solid var(--line);display:block}.brand{padding:0}.side-label,.side-link,.side-note,.side-foot{display:none}.main{padding:22px 14px 36px}.topbar{align-items:flex-start;flex-direction:column;margin-bottom:18px}.top-actions{width:100%}.workspace{grid-template-columns:1fr}.form-panel{position:static}.metrics{gap:8px}.metric{padding:12px;min-height:86px}.metric strong{font-size:23px}.tasks-panel{padding:14px}.tasks-head{flex-direction:column}.task{grid-template-columns:21px minmax(0,1fr)}.task-actions{grid-column:2;justify-content:flex-end}.task-tools{align-items:stretch}.search-wrap{min-width:100%;flex-basis:100%}.list-footer{flex-direction:column}.pill{font-size:10px}}
+@media(max-width:420px){.field-row{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.btn{padding:8px 10px}.filter{padding:7px 8px}.top-actions{gap:6px}}
+</style>
+</head>
+<body>
+<div class="shell">
+<aside class="sidebar">
+  <div class="brand"><div class="brand-mark">M</div><div><b>MOHSEN TOOLKIT</b><small>PERSONAL WORKSPACE</small></div></div>
+  <div class="side-label">YOUR WORKSPACE</div>
+  <a class="side-link active" href="./"><span class="glyph">☑</span> Task Desk</a>
+  <a class="side-link" href="../"><span class="glyph">⌂</span> Main toolkit</a>
+  <div class="side-note"><b>Private by default</b><p>Your tasks are saved locally in this browser. Avoid adding passwords or confidential work information.</p></div>
+  <div class="side-foot">MOHSEN TOOLS · TASK DESK</div>
+</aside>
+<main class="main">
+  <header class="topbar">
+    <div><div class="eyebrow">PLAN IT · TRACK IT · FINISH IT</div><h1>Task Desk<span style="color:var(--green)">.</span></h1></div>
+    <div class="top-actions">
+      <span class="pill" id="alertStatus">Alerts not enabled</span>
+      <button class="btn ghost" id="soundBtn" type="button">♪ Enable sound</button>
+      <button class="btn ghost" id="notifyBtn" type="button">♧ Enable notifications</button>
+      <button class="btn" id="exportBtn" type="button">↓ Export</button>
+    </div>
+  </header>
+  <section class="metrics">
+    <div class="metric accent"><label>OPEN TASKS</label><strong id="openCount">0</strong><small>Still on your list</small></div>
+    <div class="metric"><label>DUE TODAY</label><strong id="todayCount">0</strong><small>Needs attention today</small></div>
+    <div class="metric"><label>UPCOMING</label><strong id="upcomingCount">0</strong><small>Scheduled for later</small></div>
+    <div class="metric"><label>COMPLETED</label><strong id="doneCount">0</strong><small>Good work adds up</small></div>
+  </section>
+  <section class="reminder-strip"><span class="bell">◖</span><div><b>Gentle reminders, right on time.</b><br>Choose a 5, 10 or 15-minute heads-up. You can enable a soft chime and browser notifications above.</div></section>
+  <section class="workspace">
+    <form class="panel form-panel" id="taskForm">
+      <div class="panel-heading"><div><h2 id="formHeading">Add a task</h2><p>Give your next action a time and a reminder.</p></div><span style="color:var(--green);font-size:21px">＋</span></div>
+      <input type="hidden" id="taskId">
+      <label class="field"><span>Task name *</span><input id="taskTitle" maxlength="120" placeholder="What do you need to get done?" required></label>
+      <label class="field"><span>Due date & time *</span><input id="taskDue" type="datetime-local" required></label>
+      <div class="field-row">
+        <label class="field"><span>Remind me before</span><select id="taskReminder"><option value="0">No reminder</option><option value="5" selected>5 minutes</option><option value="10">10 minutes</option><option value="15">15 minutes</option></select></label>
+        <label class="field"><span>Priority</span><select id="taskPriority"><option value="medium" selected>Medium</option><option value="high">High</option><option value="low">Low</option></select></label>
+      </div>
+      <label class="field"><span>Notes <small style="color:#829186;font-weight:400">(optional)</small></span><textarea id="taskNotes" maxlength="500" placeholder="Add a few details..."></textarea></label>
+      <div class="form-actions"><button class="btn primary" id="saveTaskBtn" type="submit">＋ Add task</button><button class="btn ghost" id="cancelEditBtn" type="button" hidden>Cancel</button></div>
+      <p class="hint">Reminders are checked while this page is open in your browser. Allow sound/notifications for the best experience.</p>
+    </form>
+    <div class="panel tasks-panel">
+      <div class="tasks-head"><div><h2>Your tasks</h2><p>Keep the important things moving.</p></div><span class="pill" id="taskCountLabel">0 tasks</span></div>
+      <div class="task-tools">
+        <div class="search-wrap"><input class="search" id="taskSearch" type="search" placeholder="Search your tasks..."></div>
+        <div class="filters" role="group" aria-label="Filter tasks">
+          <button type="button" class="filter active" data-filter="all">All</button>
+          <button type="button" class="filter" data-filter="today">Today</button>
+          <button type="button" class="filter" data-filter="upcoming">Upcoming</button>
+          <button type="button" class="filter" data-filter="completed">Done</button>
+        </div>
+      </div>
+      <div class="task-list" id="taskList"></div>
+      <div class="list-footer"><span id="listSummary">Your tasks stay on this device.</span><button class="btn small ghost" id="importBtn" type="button">↑ Import backup</button></div>
+    </div>
+  </section>
+  <p class="fineprint">Local storage only: tasks do not automatically sync between devices. Browser reminders are not a server-side alarm, so the Task Desk page must remain open (the tab may be in the background) and your browser must be running. Notifications also depend on browser permission and device settings.</p>
+</main>
+</div>
+<input type="file" id="importFile" accept="application/json,.json" hidden>
+<div class="toast-area" id="toastArea" aria-live="polite"></div>
+<div class="modal-backdrop" id="deleteModal" role="dialog" aria-modal="true" aria-labelledby="deleteTitle">
+  <div class="modal"><h3 id="deleteTitle">Delete this task?</h3><p>This task will be removed from this browser. This cannot be undone unless you have an exported backup.</p><div class="form-actions"><button class="btn danger" id="confirmDelete" type="button">Delete task</button><button class="btn ghost" id="keepTask" type="button">Keep task</button></div></div>
+</div>
+<script>
+(function(){
+"use strict";
+const STORAGE_KEY="mohsenTaskDesk.v1";
+const PREF_KEY="mohsenTaskDesk.prefs.v1";
+const $=id=>document.getElementById(id);
+let tasks=[];
+let activeFilter="all";
+let deleteTarget=null;
+let audioContext=null;
+let soundEnabled=false;
+let notificationEnabled=false;
+let reminderTimer=null;
+const pad=n=>String(n).padStart(2,"0");
+function localDateTimeValue(date){
+  return date.getFullYear()+"-"+pad(date.getMonth()+1)+"-"+pad(date.getDate())+"T"+pad(date.getHours())+":"+pad(date.getMinutes());
+}
+function defaultDue(){
+  const d=new Date(Date.now()+60*60*1000);
+  d.setSeconds(0,0);
+  return localDateTimeValue(d);
+}
+function escapeHtml(value){
+  return String(value==null?"":value).replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
+}
+function saveTasks(){
+  try{localStorage.setItem(STORAGE_KEY,JSON.stringify(tasks));}
+  catch(e){toast("Could not save tasks. Browser storage may be full.","error");}
+}
+function loadTasks(){
+  try{
+    const raw=localStorage.getItem(STORAGE_KEY);
+    const parsed=raw?JSON.parse(raw):[];
+    tasks=Array.isArray(parsed)?parsed.filter(t=>t&&t.id&&t.title&&t.dueAt):[];
+  }catch(e){tasks=[];toast("Saved task data could not be read.","error");}
+  try{
+    const prefs=JSON.parse(localStorage.getItem(PREF_KEY)||"{}");
+    soundEnabled=!!prefs.soundEnabled;
+    notificationEnabled=!!prefs.notificationEnabled&&("Notification" in window)&&Notification.permission==="granted";
+  }catch(e){}
+}
+function savePrefs(){
+  try{localStorage.setItem(PREF_KEY,JSON.stringify({soundEnabled:soundEnabled,notificationEnabled:notificationEnabled}));}catch(e){}
+}
+function toast(message,type){
+  const node=document.createElement("div");
+  node.className="toast"+(type==="error"?" error":"");
+  node.textContent=message;
+  $("toastArea").appendChild(node);
+  setTimeout(()=>{node.style.opacity="0";node.style.transform="translateY(5px)";setTimeout(()=>node.remove(),220);},4200);
+}
+function formatDate(dateValue){
+  const d=new Date(dateValue);
+  if(Number.isNaN(d.getTime()))return "Invalid date";
+  const today=new Date();
+  const tomorrow=new Date();tomorrow.setDate(tomorrow.getDate()+1);
+  const sameDay=(a,b)=>a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate();
+  const day=sameDay(d,today)?"Today":(sameDay(d,tomorrow)?"Tomorrow":d.toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric"}));
+  return day+" · "+d.toLocaleTimeString(undefined,{hour:"numeric",minute:"2-digit"});
+}
+function isSameDay(a,b){
+  return a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate();
+}
+function dueState(task){
+  const due=new Date(task.dueAt).getTime();
+  if(task.completed)return "done";
+  if(due<Date.now())return "overdue";
+  if(isSameDay(new Date(task.dueAt),new Date()))return "today";
+  return "upcoming";
+}
+function sortTasks(a,b){
+  if(!!a.completed!==!!b.completed)return a.completed?1:-1;
+  return new Date(a.dueAt)-new Date(b.dueAt);
+}
+function renderMetrics(){
+  const open=tasks.filter(t=>!t.completed);
+  $("openCount").textContent=open.length;
+  $("todayCount").textContent=open.filter(t=>isSameDay(new Date(t.dueAt),new Date())).length;
+  $("upcomingCount").textContent=open.filter(t=>new Date(t.dueAt).getTime()>Date.now()&&!isSameDay(new Date(t.dueAt),new Date())).length;
+  $("doneCount").textContent=tasks.filter(t=>t.completed).length;
+}
+function renderTasks(){
+  const search=$("taskSearch").value.trim().toLowerCase();
+  const now=new Date();
+  let list=tasks.slice().sort(sortTasks).filter(t=>{
+    const state=dueState(t);
+    if(activeFilter==="today"&&(t.completed||!isSameDay(new Date(t.dueAt),now)))return false;
+    if(activeFilter==="upcoming"&&(t.completed||new Date(t.dueAt).getTime()<=Date.now()))return false;
+    if(activeFilter==="completed"&&!t.completed)return false;
+    if(search&&!((t.title+" "+(t.notes||"")).toLowerCase().includes(search)))return false;
+    return true;
+  });
+  $("taskCountLabel").textContent=list.length+" "+(list.length===1?"task":"tasks");
+  $("listSummary").textContent=tasks.length+" saved · Stored in this browser";
+  if(!list.length){
+    $("taskList").innerHTML='<div class="empty"><div class="empty-icon">◌</div><b>'+(search?"No matching tasks":(activeFilter==="completed"?"Nothing completed yet":"Your task list is clear"))+'</b><p>'+(search?"Try another search term.":"Add your next task using the form.")+'</p></div>';
+    return;
+  }
+  $("taskList").innerHTML=list.map(t=>{
+    const state=dueState(t);
+    const priority=String(t.priority||"medium").toLowerCase();
+    const reminder=Number(t.reminderMinutes||0);
+    const reminderText=reminder?("◷ "+reminder+" min reminder"):"No reminder";
+    const statusText=state==="overdue"?"Overdue":(state==="today"?"Due today":(state==="done"?"Completed":"Upcoming"));
+    return '<article class="task'+(t.completed?" done":"")+'" data-id="'+escapeHtml(t.id)+'">'+
+      '<input class="task-check" type="checkbox" aria-label="Mark '+escapeHtml(t.title)+' complete" data-action="complete" '+(t.completed?"checked":"")+'>'+
+      '<div class="task-body"><div class="task-title">'+escapeHtml(t.title)+'</div>'+
+      (t.notes?'<div class="task-notes">'+escapeHtml(t.notes)+'</div>':"")+
+      '<div class="task-meta"><span class="meta">▣ '+escapeHtml(formatDate(t.dueAt))+'</span><span class="tag '+escapeHtml(priority)+'">'+escapeHtml(priority)+'</span><span class="tag '+(state==="overdue"?"overdue":"")+'">'+statusText+'</span><span class="meta">'+reminderText+'</span></div></div>'+
+      '<div class="task-actions"><button class="icon-btn" type="button" title="Edit task" aria-label="Edit task" data-action="edit">✎</button><button class="icon-btn" type="button" title="Delete task" aria-label="Delete task" data-action="delete">×</button></div></article>';
+  }).join("");
+}
+function render(){
+  renderMetrics();
+  renderTasks();
+  updateAlertStatus();
+}
+function resetForm(){
+  $("taskForm").reset();
+  $("taskId").value="";
+  $("taskDue").value=defaultDue();
+  $("taskReminder").value="5";
+  $("taskPriority").value="medium";
+  $("formHeading").textContent="Add a task";
+  $("saveTaskBtn").textContent="＋ Add task";
+  $("cancelEditBtn").hidden=true;
+}
+function beginEdit(task){
+  $("taskId").value=task.id;
+  $("taskTitle").value=task.title;
+  $("taskDue").value=localDateTimeValue(new Date(task.dueAt));
+  $("taskReminder").value=String(task.reminderMinutes||0);
+  $("taskPriority").value=task.priority||"medium";
+  $("taskNotes").value=task.notes||"";
+  $("formHeading").textContent="Edit task";
+  $("saveTaskBtn").textContent="Save changes";
+  $("cancelEditBtn").hidden=false;
+  $("taskTitle").focus();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function makeId(){
+  if(window.crypto&&crypto.randomUUID)return crypto.randomUUID();
+  return "task-"+Date.now()+"-"+Math.random().toString(16).slice(2);
+}
+$("taskForm").addEventListener("submit",function(event){
+  event.preventDefault();
+  const title=$("taskTitle").value.trim();
+  const dueInput=$("taskDue").value;
+  const due=new Date(dueInput);
+  if(!title||!dueInput||Number.isNaN(due.getTime())){toast("Add a task name and a valid due date.","error");return;}
+  const id=$("taskId").value;
+  const existing=id?tasks.find(t=>t.id===id):null;
+  const task={
+    id:id||makeId(),
+    title:title,
+    notes:$("taskNotes").value.trim(),
+    dueAt:due.toISOString(),
+    reminderMinutes:Number($("taskReminder").value),
+    priority:$("taskPriority").value,
+    completed:existing?!!existing.completed:false,
+    reminded:false,
+    createdAt:existing?existing.createdAt:new Date().toISOString()
+  };
+  if(existing)tasks=tasks.map(t=>t.id===id?task:t);
+  else tasks.push(task);
+  saveTasks();
+  resetForm();
+  render();
+  scanReminders();
+  toast(existing?"Task updated.":"Task added to your list.");
+});
+$("cancelEditBtn").addEventListener("click",resetForm);
+$("taskSearch").addEventListener("input",renderTasks);
+document.querySelectorAll("[data-filter]").forEach(button=>{
+  button.addEventListener("click",()=>{
+    activeFilter=button.dataset.filter;
+    document.querySelectorAll("[data-filter]").forEach(b=>b.classList.toggle("active",b===button));
+    renderTasks();
+  });
+});
+$("taskList").addEventListener("click",event=>{
+  const actionButton=event.target.closest("[data-action]");
+  if(!actionButton)return;
+  const card=actionButton.closest(".task");
+  if(!card)return;
+  const task=tasks.find(t=>t.id===card.dataset.id);
+  if(!task)return;
+  const action=actionButton.dataset.action;
+  if(action==="edit")beginEdit(task);
+  if(action==="delete"){
+    deleteTarget=task.id;
+    $("deleteModal").classList.add("open");
+  }
+});
+$("taskList").addEventListener("change",event=>{
+  if(event.target.matches('[data-action="complete"]')){
+    const card=event.target.closest(".task");
+    const task=tasks.find(t=>t.id===card.dataset.id);
+    if(task){
+      task.completed=event.target.checked;
+      if(task.completed)task.reminded=true;
+      saveTasks();render();
+      toast(task.completed?"Task completed. Nice work!":"Task moved back to your open list.");
+    }
+  }
+});
+$("confirmDelete").addEventListener("click",()=>{
+  if(deleteTarget){
+    tasks=tasks.filter(t=>t.id!==deleteTarget);
+    saveTasks();render();toast("Task deleted.");
+  }
+  deleteTarget=null;$("deleteModal").classList.remove("open");
+});
+$("keepTask").addEventListener("click",()=>{$("deleteModal").classList.remove("open");deleteTarget=null;});
+$("deleteModal").addEventListener("click",e=>{if(e.target===$("deleteModal"))$("keepTask").click();});
+function updateAlertStatus(){
+  const parts=[];
+  if(soundEnabled)parts.push("Sound on");
+  if(notificationEnabled&&("Notification" in window)&&Notification.permission==="granted")parts.push("Notifications on");
+  $("alertStatus").textContent=parts.length?parts.join(" · "):"Alerts not enabled";
+  $("soundBtn").textContent=soundEnabled?"♪ Sound enabled":"♪ Enable sound";
+  $("notifyBtn").textContent=notificationEnabled?"♧ Notifications on":"♧ Enable notifications";
+}
+function getAudioContext(){
+  const AudioCtx=window.AudioContext||window.webkitAudioContext;
+  if(!AudioCtx)return null;
+  if(!audioContext)audioContext=new AudioCtx();
+  return audioContext;
+}
+function playChime(){
+  if(!soundEnabled)return;
+  try{
+    const ctx=getAudioContext();
+    if(!ctx)return;
+    if(ctx.state==="suspended")ctx.resume();
+    const start=ctx.currentTime+0.02;
+    [660,880].forEach((frequency,index)=>{
+      const osc=ctx.createOscillator();
+      const gain=ctx.createGain();
+      const at=start+index*0.19;
+      osc.type="sine";
+      osc.frequency.setValueAtTime(frequency,at);
+      gain.gain.setValueAtTime(0.0001,at);
+      gain.gain.exponentialRampToValueAtTime(0.045,at+0.025);
+      gain.gain.exponentialRampToValueAtTime(0.0001,at+0.14);
+      osc.connect(gain);gain.connect(ctx.destination);
+      osc.start(at);osc.stop(at+0.16);
+    });
+  }catch(e){}
+}
+$("soundBtn").addEventListener("click",async()=>{
+  const ctx=getAudioContext();
+  if(!ctx){toast("Audio is not supported in this browser.","error");return;}
+  try{await ctx.resume();}catch(e){}
+  soundEnabled=!soundEnabled;
+  savePrefs();updateAlertStatus();
+  if(soundEnabled){playChime();toast("Soft reminder sound enabled.");}
+  else toast("Reminder sound turned off.");
+});
+$("notifyBtn").addEventListener("click",async()=>{
+  if(!("Notification" in window)){toast("This browser does not support notifications.","error");return;}
+  if(Notification.permission==="denied"){toast("Notifications are blocked in browser settings. Sound can still work while this page is open.","error");return;}
+  let permission=Notification.permission;
+  if(permission==="default"){
+    try{permission=await Notification.requestPermission();}catch(e){permission="denied";}
+  }
+  notificationEnabled=permission==="granted";
+  savePrefs();updateAlertStatus();
+  if(notificationEnabled)toast("Browser notifications enabled.");
+  else toast("Notifications were not enabled. You can still use the soft sound.");
+});
+function sendNotification(task){
+  const reminder=Number(task.reminderMinutes||0);
+  const message=task.title+" is due in "+reminder+" minutes.";
+  if(notificationEnabled&&("Notification" in window)&&Notification.permission==="granted"){
+    try{
+      const notification=new Notification("Task reminder",{body:message,tag:"task-"+task.id,renotify:false,silent:true});
+      notification.onclick=function(){window.focus();notification.close();};
+    }catch(e){}
+  }
+}
+function scanReminders(){
+  const now=Date.now();
+  let changed=false;
+  tasks.forEach(task=>{
+    if(task.completed||task.reminded||!Number(task.reminderMinutes))return;
+    const due=new Date(task.dueAt).getTime();
+    if(!Number.isFinite(due)||due<=now)return;
+    const alertAt=due-(Number(task.reminderMinutes)*60000);
+    if(now>=alertAt){
+      task.reminded=true;changed=true;
+      toast("Reminder: "+task.title+" · due in "+task.reminderMinutes+" min");
+      playChime();
+      sendNotification(task);
+    }
+  });
+  if(changed){saveTasks();render();}
+}
+$("exportBtn").addEventListener("click",()=>{
+  const payload={app:"Mohsen Task Desk",version:1,exportedAt:new Date().toISOString(),tasks:tasks};
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");a.href=url;a.download="mohsen-task-desk-backup.json";a.click();
+  URL.revokeObjectURL(url);toast("Task backup exported.");
+});
+$("importBtn").addEventListener("click",()=>$("importFile").click());
+$("importFile").addEventListener("change",async()=>{
+  const file=$("importFile").files&&$("importFile").files[0];
+  if(!file)return;
+  try{
+    const text=await file.text();
+    const parsed=JSON.parse(text);
+    const incoming=Array.isArray(parsed)?parsed:parsed.tasks;
+    if(!Array.isArray(incoming))throw new Error("Invalid backup");
+    const cleaned=incoming.filter(t=>t&&typeof t.title==="string"&&t.title.trim()&&t.dueAt).map(t=>({
+      id:String(t.id||makeId()),title:String(t.title).slice(0,120),notes:String(t.notes||"").slice(0,500),
+      dueAt:new Date(t.dueAt).toISOString(),reminderMinutes:[0,5,10,15].includes(Number(t.reminderMinutes))?Number(t.reminderMinutes):0,
+      priority:["low","medium","high"].includes(t.priority)?t.priority:"medium",completed:!!t.completed,reminded:!!t.reminded,createdAt:t.createdAt||new Date().toISOString()
+    }));
+    const map=new Map(tasks.map(t=>[t.id,t]));
+    cleaned.forEach(t=>map.set(t.id,t));
+    tasks=Array.from(map.values());saveTasks();render();toast(cleaned.length+" task(s) imported.");
+  }catch(e){toast("Could not import that backup file.","error");}
+  $("importFile").value="";
+});
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)scanReminders();});
+window.addEventListener("focus",scanReminders);
+loadTasks();
+$("taskDue").value=defaultDue();
+render();
+scanReminders();
+reminderTimer=window.setInterval(scanReminders,10000);
+updateAlertStatus();
+})();
+</script>
+</body>
+</html>
