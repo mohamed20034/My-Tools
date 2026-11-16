@@ -8,6 +8,7 @@ A personal browser-based workspace for hotel-only Tripadvisor Business Advantage
 3. **Product Value Comparator** — positions Business Advantage, free listing, Sponsored Placements, Meta/metasearch and Direct Book Max as distinct categories. It is not a definitive product specification.
 4. **Smart Follow-up Writer** — drafts professional American-English emails from approved, non-sensitive notes.
 5. **Hotel Renewal Tracker** — tracks renewal dates, stage, risk and next actions locally, with CSV/JSON export.
+6. **Task Desk** — a personal task list with due dates, 5/10/15-minute reminders, a gentle optional chime, browser notifications and JSON backup. Open it at https://mohamed20034.github.io/My-Tools/tasks/.
 
 ## Deploy on GitHub Pages
 1. Open **Settings → Pages** in this repository.
@@ -28,4 +29,5 @@ Verify current Business Advantage inclusions, eligibility, renewal terms, pricin
 ## Files
 - index.html — application structure
 - styles.css — green/black responsive styling
-- app.js — browser-side logic and local tracker
+- app.js — browser-side logic and hotel tracker
+- tasks/index.html — standalone personal task tracker and reminder desk
