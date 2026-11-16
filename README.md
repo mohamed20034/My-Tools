@@ -10,6 +10,9 @@ Choose where you want to go:
 - **[Task Desk — Personal Tasks & Reminders](https://mohamed20034.github.io/My-Tools/tasks/)**  
   Open the separate task manager with due dates, 5/10/15-minute reminders and a repeatable gentle alarm.
 
+
+- **[GeoTime — Time Zone Finder](https://mohamed20034.github.io/My-Tools/geotime/)**  
+  Open the unlisted location-based time zone finder. Supports addresses, cities, ZIP/postal codes, coordinates, OpenStreetMap IDs and GeoNames IDs, with a live comparison against Egypt.
 ---
 
 A personal browser-based workspace for hotel-only Tripadvisor Business Advantage renewal preparation.
