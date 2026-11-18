@@ -28,7 +28,7 @@
     <div><div class="eyebrow">PLAN IT · TRACK IT · FINISH IT</div><h1>Task Desk<span style="color:var(--green)">.</span></h1></div>
     <div class="top-actions">
       <span class="pill" id="alertStatus">Alerts not enabled</span>
-      <button class="btn ghost" id="soundBtn" type="button">♪ Enable sound</button>
+      <label class="pill" style="display:flex;align-items:center;gap:7px">Sound <select id="soundStyle" aria-label="Reminder sound" style="background:transparent;color:inherit;border:0;max-width:125px;outline:none"><option value="chime">Soft chime</option><option value="bell">Bell</option><option value="digital">Digital beeps</option><option value="melody">Gentle melody</option><option value="pulse">Double pulse</option></select></label><button class="btn ghost" id="soundBtn" type="button">♪ Enable sound</button>
       <button class="btn ghost" id="notifyBtn" type="button">♧ Enable notifications</button>
       <button class="btn" id="exportBtn" type="button">↓ Export</button>
     </div>
@@ -45,7 +45,7 @@
       <div class="panel-heading"><div><h2 id="formHeading">Add a task</h2><p>Give your next action a time and a reminder.</p></div><span style="color:var(--green);font-size:21px">＋</span></div>
       <input type="hidden" id="taskId">
       <label class="field"><span>Task name *</span><input id="taskTitle" maxlength="120" placeholder="What do you need to get done?" required></label>
-      <label class="field"><span>Due date & time *</span><input id="taskDue" type="datetime-local" required></label>
+      <label class="field"><span>Due date & time</span><input id="taskDue" type="datetime-local"><label style="display:flex;align-items:center;gap:8px;margin-top:8px;color:#aab8ad;font-size:11px"><input id="noDeadline" type="checkbox" style="accent-color:var(--green)"> No deadline — just keep this on my task list</label></label>
       <div class="field-row">
         <label class="field"><span>Remind me before</span><select id="taskReminder"><option value="0">No reminder</option><option value="5" selected>5 minutes</option><option value="10">10 minutes</option><option value="15">15 minutes</option></select></label>
         <label class="field"><span>Priority</span><select id="taskPriority"><option value="medium" selected>Medium</option><option value="high">High</option><option value="low">Low</option></select></label>
@@ -115,16 +115,17 @@ function loadTasks(){
   try{
     const raw=localStorage.getItem(STORAGE_KEY);
     const parsed=raw?JSON.parse(raw):[];
-    tasks=Array.isArray(parsed)?parsed.filter(t=>t&&t.id&&t.title&&t.dueAt):[];
+    tasks=Array.isArray(parsed)?parsed.filter(t=>t&&t.id&&t.title):[];
   }catch(e){tasks=[];toast("Saved task data could not be read.","error");}
   try{
     const prefs=JSON.parse(localStorage.getItem(PREF_KEY)||"{}");
+    $("soundStyle").value=["chime","bell","digital","melody","pulse"].includes(prefs.soundStyle)?prefs.soundStyle:"chime";
     soundEnabled=false;
     notificationEnabled=!!prefs.notificationEnabled&&("Notification" in window)&&Notification.permission==="granted";
   }catch(e){}
 }
 function savePrefs(){
-  try{localStorage.setItem(PREF_KEY,JSON.stringify({soundEnabled:soundEnabled,notificationEnabled:notificationEnabled}));}catch(e){}
+  try{localStorage.setItem(PREF_KEY,JSON.stringify({soundEnabled:soundEnabled,notificationEnabled:notificationEnabled,soundStyle:$("soundStyle").value}));}catch(e){}
 }
 function toast(message,type){
   const node=document.createElement("div");
@@ -146,21 +147,24 @@ function isSameDay(a,b){
   return a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate();
 }
 function dueState(task){
-  const due=new Date(task.dueAt).getTime();
   if(task.completed)return "done";
+  if(!task.dueAt)return "no-deadline";
+  const due=new Date(task.dueAt).getTime();
   if(due<Date.now())return "overdue";
   if(isSameDay(new Date(task.dueAt),new Date()))return "today";
   return "upcoming";
 }
 function sortTasks(a,b){
   if(!!a.completed!==!!b.completed)return a.completed?1:-1;
-  return new Date(a.dueAt)-new Date(b.dueAt);
+  const ad=a.dueAt?new Date(a.dueAt).getTime():Infinity;
+  const bd=b.dueAt?new Date(b.dueAt).getTime():Infinity;
+  return ad-bd;
 }
 function renderMetrics(){
   const open=tasks.filter(t=>!t.completed);
   $("openCount").textContent=open.length;
-  $("todayCount").textContent=open.filter(t=>isSameDay(new Date(t.dueAt),new Date())).length;
-  $("upcomingCount").textContent=open.filter(t=>new Date(t.dueAt).getTime()>Date.now()&&!isSameDay(new Date(t.dueAt),new Date())).length;
+  $("todayCount").textContent=open.filter(t=>t.dueAt&&isSameDay(new Date(t.dueAt),new Date())).length;
+  $("upcomingCount").textContent=open.filter(t=>t.dueAt&&new Date(t.dueAt).getTime()>Date.now()&&!isSameDay(new Date(t.dueAt),new Date())).length;
   $("doneCount").textContent=tasks.filter(t=>t.completed).length;
 }
 function renderTasks(){
@@ -168,8 +172,8 @@ function renderTasks(){
   const now=new Date();
   let list=tasks.slice().sort(sortTasks).filter(t=>{
     const state=dueState(t);
-    if(activeFilter==="today"&&(t.completed||!isSameDay(new Date(t.dueAt),now)))return false;
-    if(activeFilter==="upcoming"&&(t.completed||new Date(t.dueAt).getTime()<=Date.now()))return false;
+    if(activeFilter==="today"&&(t.completed||!t.dueAt||!isSameDay(new Date(t.dueAt),now)))return false;
+    if(activeFilter==="upcoming"&&(t.completed||!t.dueAt||new Date(t.dueAt).getTime()<=Date.now()))return false;
     if(activeFilter==="completed"&&!t.completed)return false;
     if(search&&!((t.title+" "+(t.notes||"")).toLowerCase().includes(search)))return false;
     return true;
@@ -185,12 +189,13 @@ function renderTasks(){
     const priority=String(t.priority||"medium").toLowerCase();
     const reminder=Number(t.reminderMinutes||0);
     const reminderText=reminder?("◷ "+reminder+" min reminder"):"No reminder";
-    const statusText=state==="overdue"?"Overdue":(state==="today"?"Due today":(state==="done"?"Completed":"Upcoming"));
+    const statusText=state==="overdue"?"Overdue":(state==="today"?"Due today":(state==="done"?"Completed":(state==="no-deadline"?"No deadline":"Upcoming")));
+    const dueText=t.dueAt?("▣ "+escapeHtml(formatDate(t.dueAt))):"No deadline";
     return '<article class="task'+(t.completed?" done":"")+'" data-id="'+escapeHtml(t.id)+'">'+
       '<input class="task-check" type="checkbox" aria-label="Mark '+escapeHtml(t.title)+' complete" data-action="complete" '+(t.completed?"checked":"")+'>'+
       '<div class="task-body"><div class="task-title">'+escapeHtml(t.title)+'</div>'+
       (t.notes?'<div class="task-notes">'+escapeHtml(t.notes)+'</div>':"")+
-      '<div class="task-meta"><span class="meta">▣ '+escapeHtml(formatDate(t.dueAt))+'</span><span class="tag '+escapeHtml(priority)+'">'+escapeHtml(priority)+'</span><span class="tag '+(state==="overdue"?"overdue":"")+'">'+statusText+'</span><span class="meta">'+reminderText+'</span></div></div>'+
+      '<div class="task-meta"><span class="meta">'+dueText+'</span><span class="tag '+escapeHtml(priority)+'">'+escapeHtml(priority)+'</span><span class="tag '+(state==="overdue"?"overdue":"")+'">'+statusText+'</span><span class="meta">'+reminderText+'</span></div></div>'+
       '<div class="task-actions"><button class="icon-btn" type="button" title="Edit task" aria-label="Edit task" data-action="edit">✎</button><button class="icon-btn" type="button" title="Delete task" aria-label="Delete task" data-action="delete">×</button></div></article>';
   }).join("");
 }
@@ -203,6 +208,9 @@ function resetForm(){
   $("taskForm").reset();
   $("taskId").value="";
   $("taskDue").value=defaultDue();
+  $("noDeadline").checked=false;
+  $("taskDue").disabled=false;
+  $("taskReminder").disabled=false;
   $("taskReminder").value="5";
   $("taskPriority").value="medium";
   $("formHeading").textContent="Add a task";
@@ -212,7 +220,10 @@ function resetForm(){
 function beginEdit(task){
   $("taskId").value=task.id;
   $("taskTitle").value=task.title;
-  $("taskDue").value=localDateTimeValue(new Date(task.dueAt));
+  $("noDeadline").checked=!task.dueAt;
+  $("taskDue").disabled=!task.dueAt;
+  $("taskDue").value=task.dueAt?localDateTimeValue(new Date(task.dueAt)):"";
+  $("taskReminder").disabled=!task.dueAt;
   $("taskReminder").value=String(task.reminderMinutes||0);
   $("taskPriority").value=task.priority||"medium";
   $("taskNotes").value=task.notes||"";
@@ -229,17 +240,18 @@ function makeId(){
 $("taskForm").addEventListener("submit",function(event){
   event.preventDefault();
   const title=$("taskTitle").value.trim();
+  const noDeadline=$("noDeadline").checked;
   const dueInput=$("taskDue").value;
   const due=new Date(dueInput);
-  if(!title||!dueInput||Number.isNaN(due.getTime())){toast("Add a task name and a valid due date.","error");return;}
+  if(!title||(!noDeadline&&(!dueInput||Number.isNaN(due.getTime())))){toast("Add a task name and a valid due date, or choose No deadline.","error");return;}
   const id=$("taskId").value;
   const existing=id?tasks.find(t=>t.id===id):null;
   const task={
     id:id||makeId(),
     title:title,
     notes:$("taskNotes").value.trim(),
-    dueAt:due.toISOString(),
-    reminderMinutes:Number($("taskReminder").value),
+    dueAt:noDeadline?"":due.toISOString(),
+    reminderMinutes:noDeadline?0:Number($("taskReminder").value),
     priority:$("taskPriority").value,
     completed:existing?!!existing.completed:false,
     reminded:false,
@@ -254,6 +266,7 @@ $("taskForm").addEventListener("submit",function(event){
   toast(existing?"Task updated.":"Task added to your list.");
 });
 $("cancelEditBtn").addEventListener("click",resetForm);
+$("noDeadline").addEventListener("change",()=>{const off=$("noDeadline").checked;$("taskDue").disabled=off;$("taskReminder").disabled=off;if(off)$("taskReminder").value="0";else if($("taskReminder").value==="0")$("taskReminder").value="5";});
 $("taskSearch").addEventListener("input",renderTasks);
 document.querySelectorAll("[data-filter]").forEach(button=>{
   button.addEventListener("click",()=>{
@@ -315,22 +328,11 @@ function getAudioContext(){
 function playChime(){
   if(!soundEnabled)return;
   try{
-    const ctx=getAudioContext();
-    if(!ctx)return;
+    const ctx=getAudioContext();if(!ctx)return;
     if(ctx.state==="suspended")ctx.resume();
-    const start=ctx.currentTime+0.02;
-    [660,880].forEach((frequency,index)=>{
-      const osc=ctx.createOscillator();
-      const gain=ctx.createGain();
-      const at=start+index*0.19;
-      osc.type="sine";
-      osc.frequency.setValueAtTime(frequency,at);
-      gain.gain.setValueAtTime(0.0001,at);
-      gain.gain.exponentialRampToValueAtTime(0.045,at+0.025);
-      gain.gain.exponentialRampToValueAtTime(0.0001,at+0.14);
-      osc.connect(gain);gain.connect(ctx.destination);
-      osc.start(at);osc.stop(at+0.16);
-    });
+    const styles={chime:{notes:[660,880],wave:"sine",gap:.19,duration:.14,volume:.045},bell:{notes:[880,1175,880],wave:"sine",gap:.12,duration:.28,volume:.055},digital:{notes:[740,740,990],wave:"square",gap:.11,duration:.075,volume:.025},melody:{notes:[523,659,784],wave:"triangle",gap:.16,duration:.2,volume:.04},pulse:{notes:[440,660,440,660],wave:"triangle",gap:.09,duration:.07,volume:.035}};
+    const style=styles[$("soundStyle").value]||styles.chime,start=ctx.currentTime+.02;
+    style.notes.forEach((frequency,index)=>{const osc=ctx.createOscillator(),gain=ctx.createGain(),at=start+index*style.gap;osc.type=style.wave;osc.frequency.setValueAtTime(frequency,at);gain.gain.setValueAtTime(.0001,at);gain.gain.exponentialRampToValueAtTime(style.volume,at+.018);gain.gain.exponentialRampToValueAtTime(.0001,at+style.duration);osc.connect(gain);gain.connect(ctx.destination);osc.start(at);osc.stop(at+style.duration+.02);});
   }catch(e){}
 }
 function startSoundLoop(){
@@ -361,6 +363,7 @@ function stopRinging(){
   toast("Reminder stopped.");
 }
 $("stopRinging").addEventListener("click",stopRinging);
+$("soundStyle").addEventListener("change",()=>{savePrefs();if(soundEnabled&&activeAlerts.length)playChime();toast("Reminder sound changed.");});
 $("soundBtn").addEventListener("click",async()=>{
   const ctx=getAudioContext();
   if(!ctx){toast("Audio is not supported in this browser.","error");return;}
@@ -396,7 +399,7 @@ function scanReminders(){
   const now=Date.now();
   let changed=false;
   tasks.forEach(task=>{
-    if(task.completed||task.reminded||!Number(task.reminderMinutes))return;
+    if(task.completed||!task.dueAt||task.reminded||!Number(task.reminderMinutes))return;
     const due=new Date(task.dueAt).getTime();
     if(!Number.isFinite(due)||due<=now)return;
     const alertAt=due-(Number(task.reminderMinutes)*60000);
@@ -425,9 +428,9 @@ $("importFile").addEventListener("change",async()=>{
     const parsed=JSON.parse(text);
     const incoming=Array.isArray(parsed)?parsed:parsed.tasks;
     if(!Array.isArray(incoming))throw new Error("Invalid backup");
-    const cleaned=incoming.filter(t=>t&&typeof t.title==="string"&&t.title.trim()&&t.dueAt).map(t=>({
+    const cleaned=incoming.filter(t=>t&&typeof t.title==="string"&&t.title.trim()).map(t=>({
       id:String(t.id||makeId()),title:String(t.title).slice(0,120),notes:String(t.notes||"").slice(0,500),
-      dueAt:new Date(t.dueAt).toISOString(),reminderMinutes:[0,5,10,15].includes(Number(t.reminderMinutes))?Number(t.reminderMinutes):0,
+      dueAt:t.dueAt?new Date(t.dueAt).toISOString():"",reminderMinutes:t.dueAt&&[0,5,10,15].includes(Number(t.reminderMinutes))?Number(t.reminderMinutes):0,
       priority:["low","medium","high"].includes(t.priority)?t.priority:"medium",completed:!!t.completed,reminded:!!t.reminded,createdAt:t.createdAt||new Date().toISOString()
     }));
     const map=new Map(tasks.map(t=>[t.id,t]));
